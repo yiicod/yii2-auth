@@ -23,7 +23,7 @@ has simple action what have added in controller. Extension has events:
 - afterLogout(ActionEvent)
 
 You can create own behavior and use this events or extend exist behavior and 
-change events. Use yii2cod\auth\controllers\behaviors\AuthUserBehavior like parent
+change events. Use yiicod\auth\controllers\behaviors\AuthUserBehavior like parent
 if you want extend behavior.
 
 Installation
@@ -34,13 +34,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-php composer.phar require --prefer-dist yii2cod/auth "*"
+php composer.phar require --prefer-dist yiicod/yii2-auth "*"
 ```
 
 or add
 
 ```json
-"yii2cod/auth": "*"
+"yiicod/auth": "*"
 ```
 
 to the require section of your composer.json.
@@ -51,10 +51,10 @@ Config ( This is all config for extensions )
 ```php
 'components' => [
         'auth' => [
-            'class' => 'yii2cod\auth\Auth',
+            'class' => 'yiicod\auth\Auth',
             'modelMap' => [
                 'User' => [
-                    'class' => 'yii2cod\auth\models\UserModel',
+                    'class' => 'yiicod\auth\models\UserModel',
                     'fieldLogin' => 'email', //requred
                     'fieldEmail' => 'email', //requred
                     'fieldPassword' => 'password', //requred
@@ -66,22 +66,22 @@ Config ( This is all config for extensions )
                     'fieldUpdatedDate' => 'updatedDate', //or null            
                 ],
                 'PasswordResetRequestForm' => [
-                    'class' => 'yii2cod\auth\models\PasswordResetRequestForm',
+                    'class' => 'yiicod\auth\models\PasswordResetRequestForm',
                 ],
                 'ResetPasswordForm' => [
-                    'class' => 'yii2cod\auth\models\ResetPasswordForm',
+                    'class' => 'yiicod\auth\models\ResetPasswordForm',
                 ],
                 'SignupForm' => [
-                    'class' => 'yii2cod\auth\models\SignupForm',
+                    'class' => 'yiicod\auth\models\SignupForm',
                 ],
                 'LoginForm' => [
-                    'class' => 'yii2cod\auth\models\LoginForm',
+                    'class' => 'yiicod\auth\models\LoginForm',
                 ]
             ],
             'controllers' => [
                 'controllerMap' => [
                     'default' => [
-                        'web-user' => 'yii2cod\auth\controllers\WebUserController',
+                        'web-user' => 'yiicod\auth\controllers\WebUserController',
                     ],
                 ],
                 'default' => [
@@ -98,7 +98,7 @@ Config ( This is all config for extensions )
                                 ]
                             ],
                             'authUserBehavior' => [
-                                'class' => 'yii2cod\auth\controllers\behaviors\AuthUserBehavior'
+                                'class' => 'yiicod\auth\controllers\behaviors\AuthUserBehavior'
                             ]
                         ],
                     ],
