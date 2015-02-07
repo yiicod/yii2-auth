@@ -1,0 +1,18 @@
+{
+    "name": "yiicod/yii2-auth",
+    "type": "yii-extension",
+    "license": "New BSD License",
+    "authors": [
+        {
+            "name": "Alexey Orlov",
+            "email": "aaorlov88@gmail.com",
+            "homepage": "http://phpteamlib.apache.devplatform1.com/",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "yiicod\\auth\\": ""
+        }
+    }
+}
