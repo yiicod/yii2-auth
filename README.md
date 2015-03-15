@@ -28,7 +28,14 @@ if you want extend behavior.
 
 Installation
 ------------
-
+```json
+"repositories": [
+    {
+        "type": "git",
+        "url": "https://github.com/yiicod/yii2-auth.git"
+    }
+],
+```
 The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
 
 Either run

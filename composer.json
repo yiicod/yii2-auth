@@ -6,10 +6,12 @@
         {
             "name": "Alexey Orlov",
             "email": "aaorlov88@gmail.com",
-            "homepage": "http://phpteamlib.apache.devplatform1.com/",
             "role": "Developer"
         }
     ],
+    "require": {
+        "yiicod/yii2-base": "*"
+    },    
     "autoload": {
         "psr-4": {
             "yiicod\\auth\\": ""

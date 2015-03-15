@@ -169,8 +169,9 @@ class UserModel extends ActiveRecord implements IdentityInterface
     public function behaviors()
     {
         return [
-            'userBehavior' => [
-                'class' => 'yiicod\auth\models\behaviors\UserBehavior'
+            'attributesMapBehavior' => [
+                'class' => '\yiicod\base\models\behaviors\AttributesMapBehavior',
+                'attributesMap' => Yii::$app->get('auth')->modelMap['User']
             ],
             'timestampBehavior' => [
                 'class' => TimestampBehavior::className(),
