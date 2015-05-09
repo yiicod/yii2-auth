@@ -52,8 +52,8 @@ or add
 
 to the require section of your composer.json.
 
-Config ( This is all config for extensions )
----------------------------------------------
+Config ( This is all config for extension )
+-------------------------------------------
 
 ```php
 'components' => [
