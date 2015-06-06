@@ -2,7 +2,7 @@
 
 namespace yiicod\auth\models;
 
-use yiicod\auth\models\User;
+use Yii;
 use yii\base\InvalidParamException;
 use yii\base\Model;
 

@@ -3,18 +3,17 @@
 namespace yiicod\auth\actions\webUser;
 
 use Yii;
-use yiicod\auth\actions\BaseAction;
+use yii\base\InvalidParamException;
 use yiicod\auth\actions\ActionEvent;
+use yiicod\auth\actions\BaseAction;
 
 class ResetPasswordAction extends BaseAction
 {
 
-    public $view = '@yiicod/yii2-auth/views/webUser/requestPasswordResetToken';
-
     public function run($token)
     {
-        $resetPasswordFormClass = Yii::$app->get('auth')->modelMap['ResetPasswordForm']['class'];
-
+        $model = null;
+        $resetPasswordFormClass = Yii::$app->get('auth')->modelMap['ResetPasswordForm']['class'];        
 
         $this->controller->onBeforeResetPassword(new ActionEvent($this, ['params' => ['model' => $model]]));
         try {
@@ -24,16 +23,18 @@ class ResetPasswordAction extends BaseAction
                     'token' => $token,
                     'e' => $e
                 ]
-            ]));            
+            ]));
         }
 
-        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
-            $this->controller->onAfterResetPassword(new ActionEvent($this, ['params' => ['model' => $model]]));            
+        if ($model instanceof $resetPasswordFormClass &&
+                $model->load(Yii::$app->request->post()) &&
+                $model->validate() &&
+                $model->resetPassword()
+        ) {
+            $this->controller->onAfterResetPassword(new ActionEvent($this, ['params' => ['model' => $model]]));
         }
 
-        return $this->render('resetPassword', [
-                    'model' => $model,
-        ]);
+        return;
     }
 
 }
