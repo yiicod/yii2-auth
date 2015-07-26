@@ -19,7 +19,7 @@ class LoginAction extends BaseAction
         $isLoad = $model->load(Yii::$app->request->post());
         
         $this->controller->onBeforeLogin(new ActionEvent($this, ['params' => ['model' => $model]]));
-        if ($isLoad && $model->login()) {
+        if ($isLoad) {
             if ($model->login()) {
                 $this->controller->onAfterLogin(new ActionEvent($this, ['params' => ['model' => $model]]));
             } else {

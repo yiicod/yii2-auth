@@ -6,8 +6,8 @@ namespace yiicod\auth\controllers\behaviors;
  * Auth behavior with event for controller action
  * @author Orlov Alexey <aaorlov88@gmail.com>
  */
+
 use Yii;
-use yii\helpers\VarDumper;
 use yii\web\BadRequestHttpException;
 
 class AuthUserBehavior extends AuthBaseBehavior
@@ -21,9 +21,9 @@ class AuthUserBehavior extends AuthBaseBehavior
     public function afterLogin($event)
     {
         parent::afterLogin($event);
-        
+
         $event->sender->goHome();
-        
+
         Yii::$app->getResponse()->send();
     }
 
@@ -37,9 +37,9 @@ class AuthUserBehavior extends AuthBaseBehavior
         parent::afterSignUp($event);
 
         if (Yii::$app->getUser()->login($event->params['user'])) {
-            
+
             $event->sender->goHome();
-            
+
             Yii::$app->getResponse()->send();
         }
     }
@@ -59,15 +59,15 @@ class AuthUserBehavior extends AuthBaseBehavior
         Yii::$app->mailer->compose('passwordResetToken', ['action' => $event->action, 'user' => $event->params['model']->findUser()])
                 ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
                 ->setTo($event->params['model']->email)
-                ->setSubject('Password reset for ' . Yii::$app->name);       
-        
+                ->setSubject('Password reset for ' . Yii::$app->name);
+
 //                ->send();
-        Yii::$app->getSession()->setFlash('success', 'Check your email for further instructions.');
+        Yii::$app->getSession()->setFlash('success', Yii::t('auth', 'Check your email for further instructions.'));
 
         Yii::$app->mailer->viewPath = $mailerViewPath;
-        
+
         $event->sender->goHome();
-        
+
         Yii::$app->getResponse()->send();
     }
 
@@ -78,10 +78,10 @@ class AuthUserBehavior extends AuthBaseBehavior
      */
     public function afterResetPassword($event)
     {
-        Yii::$app->getSession()->setFlash('success', 'New password was saved.');
-        
+        Yii::$app->getSession()->setFlash('success', Yii::t('auth', 'New password was saved.'));
+
         $event->sender->goHome();
-        
+
         Yii::$app->getResponse()->send();
     }
 
@@ -150,7 +150,7 @@ class AuthUserBehavior extends AuthBaseBehavior
     {
         parent::errorRequestPasswordReset($event);
 
-        Yii::$app->getSession()->setFlash('error', 'Sorry, we are unable to reset password for email provided.');
+        Yii::$app->getSession()->setFlash('error', Yii::t('auth', 'Sorry, we are unable to reset password for email provided.'));
     }
 
 }
