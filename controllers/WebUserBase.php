@@ -10,12 +10,11 @@ class WebUserBase extends Controller
 
     protected function attachEvent($name, $event)
     {
-        if (false === Yii::$app->has('emitter')) {
+        if (false === Yii::$app->has('eventManager')) {
             return false;
         }
-        Yii::$app->emitter->emit($name, array(
-            $event
-        ));
+        
+        Yii::$app->trigger($name, $event);
     }
 
     /**
@@ -77,7 +76,6 @@ class WebUserBase extends Controller
     {
         $this->attachEvent('yiicod.auth.controllers.WebUserBase.afterRequestPasswordReset', $event);
         $this->trigger('afterRequestPasswordReset', $event);
-        return $event->isValid;
     }
 
     /**
@@ -88,7 +86,6 @@ class WebUserBase extends Controller
     {
         $this->attachEvent('yiicod.auth.controllers.WebUserBase.afterResetPassword', $event);
         $this->trigger('afterResetPassword', $event);
-        return $event->isValid;
     }
 
     /**
