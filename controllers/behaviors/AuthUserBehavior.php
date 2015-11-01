@@ -22,7 +22,7 @@ class AuthUserBehavior extends AuthBaseBehavior
     {
         parent::afterLogin($event);
 
-        $event->sender->goHome();
+        $event->action->controller->goHome();
 
         Yii::$app->getResponse()->send();
     }
@@ -38,7 +38,7 @@ class AuthUserBehavior extends AuthBaseBehavior
 
         if (Yii::$app->getUser()->login($event->params['user'])) {
 
-            $event->sender->goHome();
+            $event->action->controller->goHome();
 
             Yii::$app->getResponse()->send();
         }
@@ -66,7 +66,7 @@ class AuthUserBehavior extends AuthBaseBehavior
 
         Yii::$app->mailer->viewPath = $mailerViewPath;
 
-        $event->sender->goHome();
+        $event->action->controller->goHome();
 
         Yii::$app->getResponse()->send();
     }
@@ -80,7 +80,7 @@ class AuthUserBehavior extends AuthBaseBehavior
     {
         Yii::$app->getSession()->setFlash('success', Yii::t('auth', 'New password was saved.'));
 
-        $event->sender->goHome();
+        $event->action->controller->goHome();
 
         Yii::$app->getResponse()->send();
     }
@@ -95,7 +95,7 @@ class AuthUserBehavior extends AuthBaseBehavior
         parent::beforeLogin($event);
 
         if (!Yii::$app->user->isGuest) {
-            return $event->sender->goHome();
+            return $event->action->controller->goHome();
         }
     }
 

@@ -52,6 +52,20 @@ or add
 
 to the require section of your composer.json.
 
+run
+```php
+php yii migrate/up --migrationPath=@yiicod/auth/migrations
+```
+Please note that messages are wrapped with ```Yii::t()``` to support message translations, you should define default message source for them if you don't use i18n.
+```php
+'i18n' => [
+    'translations' => [
+        '*' => [
+            'class' => 'yii\i18n\PhpMessageSource'
+        ],
+    ],
+],
+
 Config ( This is all config for extension )
 -------------------------------------------
 
