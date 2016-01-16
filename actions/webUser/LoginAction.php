@@ -17,7 +17,7 @@ class LoginAction extends BaseAction
         $model = new $loginFormClass($this->scenario);
 
         $isLoad = $model->load(Yii::$app->request->post());
-        
+
         $this->controller->onBeforeLogin(new ActionEvent($this, ['params' => ['model' => $model]]));
         if ($isLoad) {
             if ($model->login()) {
@@ -25,11 +25,10 @@ class LoginAction extends BaseAction
             } else {
                 $this->controller->onErrorLogin(new ActionEvent($this, ['params' => ['model' => $model]]));
             }
-        } else {
-            return $this->controller->render($this->view, [
-                        'model' => $model,
-            ]);
         }
+        return $this->controller->render($this->view, [
+                    'model' => $model,
+        ]);
     }
 
 }
