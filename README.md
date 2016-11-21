@@ -52,4 +52,59 @@ Config
 Using
 -----
 
-Copy yiicod\auth\controllers\WebUserController to controllers.
+Copy yiicod\auth\controllers\WebUserController to controllers folder.
+After this you can use actions
+```php
+    /**
+     * Declares class-based actions.
+     * For change functional use AuthUserBehavior.
+     * Auth events:
+     *
+     * - beforeLogin(ActionEvent)
+     * - afterLogin(ActionEvent)
+     * - errorLogin(ActionEvent)
+     *
+     * - beforeSignup(ActionEvent)
+     * - afterSignup(ActionEvent)
+     * - errorSignup(ActionEvent)
+     *
+     * - beforeCheckRecoveryKey(ActionEvent)
+     * - afterCheckRecoveryKey(ActionEvent)
+     * - errorCheckRecoveryKey(ActionEvent)
+     *
+     * - beforeForgot(ActionEvent)
+     * - afterForgot(ActionEvent)
+     * - errorForgot(ActionEvent)
+     *
+     * - beforeLogout(ActionEvent)
+     * - afterLogout(ActionEvent)
+     *
+     *
+     * Global events
+     * yiicod.auth.controllers.webUser.[Action class name].[Event name (beforeLogin)]
+     * 
+     *
+     */
+    public function actions()
+    {
+
+        return ArrayHelper::merge(parent::actions(), [
+                'login' => [
+                    'class' => \yiicod\auth\actions\webUser\LoginAction::className(),
+                ],
+                'requestPasswordReset' => [
+                    'class' => \yiicod\auth\actions\webUser\RequestPasswordResetAction::className(),
+                ],
+                'logout' => [
+                    'class' => \yiicod\auth\actions\webUser\LogoutAction::className(),
+                ],
+                'signup' => [
+                    'class' => \yiicod\auth\actions\webUser\SignupAction::className(),
+                ],
+                'resetPassword' => [
+                    'class' => \yiicod\auth\actions\webUser\ResetPasswordAction::className(),
+                ],
+            ]
+        );
+    }
+```

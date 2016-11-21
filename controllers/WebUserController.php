@@ -71,23 +71,23 @@ class WebUserController extends Controller
     public function actions()
     {
 
-        return ArrayHelper::merge(parent::actions(), array(
-                'login' => array(
+        return ArrayHelper::merge(parent::actions(), [
+                'login' => [
                     'class' => \yiicod\auth\actions\webUser\LoginAction::className(),
-                ),
-                'requestPasswordReset' => array(
+                ],
+                'requestPasswordReset' => [
                     'class' => \yiicod\auth\actions\webUser\RequestPasswordResetAction::className(),
-                ),
-                'logout' => array(
+                ],
+                'logout' => [
                     'class' => \yiicod\auth\actions\webUser\LogoutAction::className(),
-                ),
-                'signup' => array(
+                ],
+                'signup' => [
                     'class' => \yiicod\auth\actions\webUser\SignupAction::className(),
-                ),
-                'resetPassword' => array(
+                ],
+                'resetPassword' => [
                     'class' => \yiicod\auth\actions\webUser\ResetPasswordAction::className(),
-                ),
-            )
+                ],
+            ]
         );
     }
 
