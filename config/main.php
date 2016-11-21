@@ -2,56 +2,24 @@
 
 return [
     'modelMap' => [
-        'User' => [
+        'user' => [
             'class' => 'yiicod\auth\models\UserModel',
-            'fieldLogin' => 'email', //requred
-            'fieldEmail' => 'email', //requred
-            'fieldPassword' => 'password', //requred
-//            'fieldConfirmPassword' => 'confirm', //requred
-            'fieldAuthKey' => 'authKey',
-            'fieldUsername' => 'username',
-            'fieldPasswordResetToken' => 'passwordResetToken', //requred
-            'fieldCreatedDate' => 'createdDate', //or null
-            'fieldUpdatedDate' => 'updatedDate', //or null            
         ],
-        'PasswordResetRequestForm' => [
+        'userQuery' => [
+            'class' => 'yiicod\auth\models\UserQuery'
+        ],
+        'passwordResetRequestForm' => [
             'class' => 'yiicod\auth\models\PasswordResetRequestForm',
         ],
-        'ResetPasswordForm' => [
+        'resetPasswordForm' => [
             'class' => 'yiicod\auth\models\ResetPasswordForm',
         ],
-        'SignupForm' => [
+        'signupForm' => [
             'class' => 'yiicod\auth\models\SignupForm',
         ],
-        'LoginForm' => [
+        'loginForm' => [
             'class' => 'yiicod\auth\models\LoginForm',
         ]
     ],
-    'controllers' => [
-        'controllerMap' => [
-            'default' => [
-                'web-user' => 'yiicod\auth\controllers\WebUserController',
-            ],
-        ],
-        'default' => [
-            'web-user' => [
-                'layout' => '',
-                'behaviors' => [
-                    'access' => [
-                        'class' => yii\filters\AccessControl::className(),
-                        'rules' => [
-                            [
-                                'allow' => true,
-                                'actions' => [ 'login', 'logout', 'requestPasswordReset', 'signup', 'resetPassword']
-                            ]
-                        ]
-                    ],
-                    'authUserBehavior' => [
-                        'class' => 'yiicod\auth\controllers\behaviors\AuthUserBehavior'
-                    ]
-                ],
-            ],
-        ]
-    ],
-    'condition' => [],    
 ];
+//adfgfdgsdg6@gmail.com

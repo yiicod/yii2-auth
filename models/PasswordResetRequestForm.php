@@ -3,9 +3,8 @@
 namespace yiicod\auth\models;
 
 use Yii;
-use yiicod\auth\models\User;
 use yii\base\Model;
-use yii\helpers\ArrayHelper;
+use yiicod\auth\models\User;
 
 /**
  * Password reset request form
@@ -25,13 +24,14 @@ class PasswordResetRequestForm extends Model
      */
     public function rules()
     {
+        $targetClass = Yii::$app->get('auth')->modelMap['user']['class'];
         return [
             ['email', 'filter', 'filter' => 'trim'],
             ['email', 'required'],
             ['email', 'email'],
             ['email', 'exist',
-                'targetClass' => Yii::$app->get('auth')->modelMap['User']['class'],
-                'targetAttribute' => Yii::$app->get('auth')->modelMap['User']['fieldEmail'],
+                'targetClass' => $targetClass,
+                'targetAttribute' => $targetClass::attributesMap()['fieldEmail'],
                 'message' => 'There is no user with such email.'
             ],
         ];
@@ -39,10 +39,14 @@ class PasswordResetRequestForm extends Model
 
     public function findUser()
     {
-        if (null === $this->_user) {            
-            $userClass = Yii::$app->get('auth')->modelMap['User']['class'];
+        if (null === $this->_user) {
+            $userClass = Yii::$app->get('auth')->modelMap['user']['class'];
 
-            $this->_user = $userClass::findOne(ArrayHelper::merge(['email' => $this->email], Yii::$app->get('auth')->condition));
+            $this->_user = $userClass::find()
+                ->where(['email' => $this->email])
+                ->byPasswordResetRequest()
+                ->one();
+
         }
         return $this->_user;
     }

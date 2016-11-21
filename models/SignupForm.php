@@ -22,14 +22,16 @@ class SignupForm extends Model
      */
     public function rules()
     {
+        $targetClass = Yii::$app->get('auth')->modelMap['user']['class'];
+
         return [
             ['username', 'filter', 'filter' => 'trim'],
             [['username', 'confirm'], 'required'],
             [
                 'username',
                 'unique',
-                'targetClass' => Yii::$app->get('auth')->modelMap['User']['class'],
-                'targetAttribute' => Yii::$app->get('auth')->modelMap['User']['fieldUsername'],
+                'targetClass' => $targetClass,
+                'targetAttribute' => $targetClass::attributesMap()['fieldUsername'],
                 'message' => 'This username has already been taken.'
             ],
             [['password'], 'compare', 'compareAttribute' => 'confirm', 'operator' => '==', 'skipOnEmpty' => false],
@@ -40,8 +42,8 @@ class SignupForm extends Model
             [
                 'email',
                 'unique',
-                'targetClass' => Yii::$app->get('auth')->modelMap['User']['class'],
-                'targetAttribute' => Yii::$app->get('auth')->modelMap['User']['fieldEmail'],
+                'targetClass' => $targetClass,
+                'targetAttribute' => $targetClass::attributesMap()['fieldEmail'],
                 'message' => 'This email address has already been taken.'
             ],
             ['password', 'required'],
@@ -58,7 +60,7 @@ class SignupForm extends Model
     {
         if ($this->validate()) {
             if (null === $user) {
-                $userClass = Yii::$app->get('auth')->modelMap['User']['class'];
+                $userClass = Yii::$app->get('auth')->modelMap['user']['class'];
                 $user = new $userClass();
             }
             $user->username = $this->username;

@@ -6,7 +6,6 @@ use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
-use yii\helpers\ArrayHelper;
 use yii\web\IdentityInterface;
 
 /**
@@ -19,7 +18,7 @@ use yii\web\IdentityInterface;
  * @property string $email
  * @property string $auth_key
  * @property integer $role
- * @property integer $status 
+ * @property integer $status
  * @property integer $updated_at
  * @property string $password write-only password
  */
@@ -31,7 +30,7 @@ class UserModel extends ActiveRecord implements IdentityInterface
      */
     public static function tableName()
     {
-        return 'User';
+        return 'user';
     }
 
     /**
@@ -48,7 +47,10 @@ class UserModel extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentity($id)
     {
-        return static::findOne(ArrayHelper::merge(['id' => $id], Yii::$app->get('auth')->condition));
+        return static::find()
+            ->where(['id' => $id])
+            ->identity()
+            ->one();
     }
 
     /**
@@ -67,9 +69,10 @@ class UserModel extends ActiveRecord implements IdentityInterface
      */
     public static function findByUsername($username)
     {
-        return static::findOne(ArrayHelper::merge([
-                            Yii::$app->get('auth')->modelMap['User']['fieldLogin'] => $username
-                                ], Yii::$app->get('auth')->condition));
+        return static::find()
+            ->where([static::attributesMap()['fieldLogin'] => $username])
+            ->byUsername()
+            ->one();
     }
 
     /**
@@ -80,23 +83,44 @@ class UserModel extends ActiveRecord implements IdentityInterface
      */
     public static function findByPasswordResetToken($token)
     {
-        $expire = isset(Yii::$app->params['user.passwordResetTokenExpire']) ?
-                Yii::$app->params['user.passwordResetTokenExpire'] :
-                3600;
-        $parts = explode('_', $token);
-        $timestamp = (int) end($parts);
-        if ($timestamp + $expire < time()) {
-            // token expired
+        if (false === static::isPasswordResetTokenValid($token)) {
             return null;
         }
 
-        return static::findOne(ArrayHelper::merge([
-                            Yii::$app->get('auth')->modelMap['User']['fieldPasswordResetToken'] => $token,
-                                ], Yii::$app->get('auth')->condition));
+        return static::find()
+            ->where([static::attributesMap()['fieldPasswordResetToken'] => $token])
+            ->byPasswordResetToken()
+            ->one();
     }
 
     /**
-     * @inheritdoc
+     * Finds out if password reset token is valid
+     *
+     * @param string $token password reset token
+     * @return bool
+     */
+    public static function isPasswordResetTokenValid($token)
+    {
+        if (empty($token)) {
+            return false;
+        }
+        $timestamp = (int)substr($token, strrpos($token, '_') + 1);
+        $expire = Yii::$app->params['user.passwordResetTokenExpire'];
+        return $timestamp + $expire >= time();
+    }
+
+    /**
+     * @return mixed
+     */
+    public static function find()
+    {
+        /** @var UserQueryInterface $userQueryclass */
+        $userQueryclass = Yii::$app->get('auth')->modelMap['userQuery']['class'];
+        return new $userQueryclass(get_called_class());
+    }
+
+    /**
+     * @return mixed
      */
     public function getId()
     {
@@ -104,15 +128,16 @@ class UserModel extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @inheritdoc
+     * @return string
      */
     public function getAuthKey()
     {
-        return $this->getAttr('authKey');
+        return $this->auth_key;
     }
 
     /**
-     * @inheritdoc
+     * @param string $authKey
+     * @return bool
      */
     public function validateAuthKey($authKey)
     {
@@ -128,7 +153,7 @@ class UserModel extends ActiveRecord implements IdentityInterface
     public function validatePassword($password)
     {
         return Yii::$app->security->validatePassword(
-                        $password, $this->password
+            $password, $this->password
         );
     }
 
@@ -147,7 +172,7 @@ class UserModel extends ActiveRecord implements IdentityInterface
      */
     public function generateAuthKey()
     {
-        $this->authKey = Yii::$app->security->generateRandomString();
+        $this->auth_key = Yii::$app->security->generateRandomString();
     }
 
     /**
@@ -155,7 +180,7 @@ class UserModel extends ActiveRecord implements IdentityInterface
      */
     public function generatePasswordResetToken()
     {
-        $this->passwordResetToken = Yii::$app->security->generateRandomString() . '_' . time();
+        $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
     }
 
     /**
@@ -163,7 +188,21 @@ class UserModel extends ActiveRecord implements IdentityInterface
      */
     public function removePasswordResetToken()
     {
-        $this->passwordResetToken = null;
+        $this->password_reset_token = null;
+    }
+
+    public static function attributesMap()
+    {
+        return [
+            'fieldLogin' => 'email', //requred
+            'fieldEmail' => 'email', //requred
+            'fieldPassword' => 'password_hash', //requred
+            'fieldAuthKey' => 'auth_key',
+            'fieldUsername' => 'username',
+            'fieldPasswordResetToken' => 'password_reset_token', //requred
+            'fieldCreatedDate' => 'created_date', //or null
+            'fieldUpdatedDate' => 'updated_date', //or null
+        ];
     }
 
     public function behaviors()
@@ -171,12 +210,12 @@ class UserModel extends ActiveRecord implements IdentityInterface
         return [
             'attributesMapBehavior' => [
                 'class' => '\yiicod\base\models\behaviors\AttributesMapBehavior',
-                'attributesMap' => Yii::$app->get('auth')->modelMap['User']
+                'attributesMap' => static::attributesMap()
             ],
             'timestampBehavior' => [
                 'class' => TimestampBehavior::className(),
-                'createdAtAttribute' => Yii::$app->get('auth')->modelMap['User']['fieldCreatedDate'],
-                'updatedAtAttribute' => Yii::$app->get('auth')->modelMap['User']['fieldUpdatedDate'],
+                'createdAtAttribute' => static::attributesMap()['fieldCreatedDate'],
+                'updatedAtAttribute' => static::attributesMap()['fieldUpdatedDate'],
             ]
         ];
     }

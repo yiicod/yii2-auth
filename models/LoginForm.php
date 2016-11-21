@@ -71,7 +71,7 @@ class LoginForm extends Model
     public function getUser()
     {
         if ($this->_user === false) {
-            $userClass = Yii::$app->get('auth')->modelMap['User']['class'];
+            $userClass = Yii::$app->get('auth')->modelMap['user']['class'];
             $this->_user = $userClass::findByUsername($this->username);
         }
 

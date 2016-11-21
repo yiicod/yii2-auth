@@ -3,38 +3,51 @@
 namespace yiicod\auth\actions\webUser;
 
 use Yii;
-use yiicod\auth\actions\BaseAction;
+use yii\base\Action;
+use yii\base\Event;
 use yiicod\auth\actions\ActionEvent;
 
-class SignupAction extends BaseAction
+class SignupAction extends Action
 {
+    const EVENT_BEFORE_SIGNUP = 'beforeSignup';
+    const EVENT_AFTER_SIGNUP = 'afterSignup';
+    const EVENT_ERROR_SIGNUP = 'errorSignup';
 
     public $view = '@yiicod/yii2-auth/views/webUser/signup';
 
+    /**
+     * Model scenario
+     * @var
+     */
+    public $scenario;
+
     public function run()
-    {        
-        $signupFormClass = Yii::$app->get('auth')->modelMap['SignupForm']['class'];
-        $userClass = Yii::$app->get('auth')->modelMap['User']['class'];        
-        $model = new $signupFormClass($this->scenario);      
+    {
+        $signupFormClass = Yii::$app->get('auth')->modelMap['signupForm']['class'];
+        $userClass = Yii::$app->get('auth')->modelMap['user']['class'];
+        $model = new $signupFormClass($this->scenario);
         $user = new $userClass($this->scenario);
-        
+
         $isLoad = $model->load(Yii::$app->request->post());
-        
-        $this->controller->onBeforeSignup(new ActionEvent($this, ['params' => [
-            'model' => $model,
-            'user' => $user,
-                ]
-                ]));
+
+        $this->trigger(static::EVENT_BEFORE_SIGNUP, new ActionEvent($this, [
+            'params' => [
+                'model' => $model,
+                'user' => $user,
+            ]
+        ]));
 
         if ($isLoad) {
             if ($user = $model->signup($user)) {
-                $this->controller->onAfterSignup(new ActionEvent($this, ['params' => [
+                $this->trigger(static::EVENT_AFTER_SIGNUP, new ActionEvent($this, [
+                    'params' => [
                         'model' => $model,
                         'user' => $user
                     ]
                 ]));
             } else {
-                $this->controller->onErrorSignup(new ActionEvent($this, ['params' => [
+                $this->trigger(static::EVENT_ERROR_SIGNUP, new ActionEvent($this, [
+                    'params' => [
                         'model' => $model,
                         'user' => $user
                     ]
@@ -43,8 +56,13 @@ class SignupAction extends BaseAction
         }
 
         return $this->controller->render($this->view, [
-                    'model' => $model,
+            'model' => $model,
         ]);
     }
 
+    public function trigger($name, Event $event = null)
+    {
+        Yii::$app->trigger(sprintf('yiicod.auth.actions.webUser.SignupAction.%s', $name), $event);
+        return parent::trigger($name, $event);
+    }
 }

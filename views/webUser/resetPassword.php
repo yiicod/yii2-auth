@@ -19,16 +19,16 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-lg-5">
             <?php
             $form = ActiveForm::begin([
-                        'id' => 'reset-password-form',
-                        'validateOnChange' => false,
-                        'validateOnBlur' => false
+                'id' => 'reset-password-form',
+                'validateOnChange' => false,
+                'validateOnBlur' => false
             ]);
             ?>
             <?php echo $form->field($model, 'password')->passwordInput() ?>
             <div class="form-group">
-<?php echo Html::submitButton('Save', ['class' => 'btn btn-primary']) ?>
+                <?php echo Html::submitButton('Save', ['class' => 'btn btn-primary']) ?>
             </div>
-<?php ActiveForm::end(); ?>
+            <?php ActiveForm::end(); ?>
         </div>
     </div>
 </div>

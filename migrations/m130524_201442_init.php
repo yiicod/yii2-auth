@@ -12,22 +12,22 @@ class m130524_201442_init extends Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
         }
 
-        $this->createTable('{{%User}}', [
+        $this->createTable('{{%user}}', [
             'id' => Schema::TYPE_PK,
             'username' => Schema::TYPE_STRING . ' NOT NULL',
             'email' => Schema::TYPE_STRING . ' NOT NULL',
             //'role' => Schema::TYPE_STRING . ' NOT NULL',
-            'authKey' => Schema::TYPE_STRING . '(32) NOT NULL',
-            'passwordHash' => Schema::TYPE_STRING . ' NOT NULL',
-            'passwordResetToken' => Schema::TYPE_STRING,
+            'auth_Key' => Schema::TYPE_STRING . '(32) NOT NULL',
+            'password_hash' => Schema::TYPE_STRING . ' NOT NULL',
+            'password_reset_token' => Schema::TYPE_STRING,
             //'status' => Schema::TYPE_SMALLINT . ' NOT NULL',
-            'createdDate' => Schema::TYPE_DATETIME . ' NOT NULL',
-            'updatedDate' => Schema::TYPE_DATETIME . ' NOT NULL',
+            'created_date' => Schema::TYPE_DATETIME . ' NOT NULL',
+            'updated_date' => Schema::TYPE_DATETIME . ' NOT NULL',
         ], $tableOptions);
     }
 
     public function down()
     {
-        $this->dropTable('{{%User}}');
+        $this->dropTable('{{%user}}');
     }
 }
