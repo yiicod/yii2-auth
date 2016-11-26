@@ -4,6 +4,8 @@ Auth extensions
 If you want simple auth (login/signup/forgot), this is what you want! This extension
 has simple action what have added in controller. Extension has events: 
 
+[![Latest Stable Version](https://poser.pugx.org/yiicod/yii2-auth/v/stable)](https://packagist.org/packages/yiicod/yii2-auth) [![Total Downloads](https://poser.pugx.org/yiicod/yii2-auth/downloads)](https://packagist.org/packages/yiicod/yii2-auth) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/yiicod/yii2-auth/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/yiicod/yii2-auth/?branch=master)[![Code Climate](https://codeclimate.com/github/yiicod/yii2-auth/badges/gpa.svg)](https://codeclimate.com/github/yiicod/yii2-auth)
+
 Installation
 ------------
 The preferred way to install this extension is through [composer](http://getcomposer.org/download/).

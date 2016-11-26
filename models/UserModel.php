@@ -199,6 +199,7 @@ class UserModel extends ActiveRecord implements IdentityInterface
             'fieldPassword' => 'password_hash', //requred
             'fieldAuthKey' => 'auth_key',
             'fieldUsername' => 'username',
+            'fieldStatus' => 'status',
             'fieldPasswordResetToken' => 'password_reset_token', //requred
             'fieldCreatedDate' => 'created_date', //or null
             'fieldUpdatedDate' => 'updated_date', //or null
