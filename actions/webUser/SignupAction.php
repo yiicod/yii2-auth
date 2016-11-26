@@ -17,6 +17,7 @@ class SignupAction extends Action
 
     /**
      * Model scenario
+     *
      * @var
      */
     public $scenario;
@@ -34,7 +35,7 @@ class SignupAction extends Action
             'params' => [
                 'model' => $model,
                 'user' => $user,
-            ]
+            ],
         ]));
 
         if ($isLoad) {
@@ -42,15 +43,15 @@ class SignupAction extends Action
                 $this->trigger(static::EVENT_AFTER_SIGNUP, new ActionEvent($this, [
                     'params' => [
                         'model' => $model,
-                        'user' => $user
-                    ]
+                        'user' => $user,
+                    ],
                 ]));
             } else {
                 $this->trigger(static::EVENT_ERROR_SIGNUP, new ActionEvent($this, [
                     'params' => [
                         'model' => $model,
-                        'user' => $user
-                    ]
+                        'user' => $user,
+                    ],
                 ]));
             }
         }
@@ -63,6 +64,7 @@ class SignupAction extends Action
     public function trigger($name, Event $event = null)
     {
         Yii::$app->trigger(sprintf('yiicod.auth.actions.webUser.SignupAction.%s', $name), $event);
+
         return parent::trigger($name, $event);
     }
 }

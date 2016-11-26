@@ -7,11 +7,11 @@ use yii\web\Controller;
 
 /**
  * WebUser controller
+ *
  * @author Orlov Alexey <aaorlov88@gmail.com>
  */
 class WebUserController extends Controller
 {
-
     public $defaultAction = 'login';
 
     /**
@@ -25,13 +25,13 @@ class WebUserController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['login', 'logout', 'requestPasswordReset', 'signup', 'resetPassword']
-                    ]
-                ]
+                        'actions' => ['login', 'logout', 'requestPasswordReset', 'signup', 'resetPassword'],
+                    ],
+                ],
             ],
             'authUserBehavior' => [
-                'class' => \yiicod\auth\controllers\behaviors\AuthUserBehavior::className()
-            ]
+                'class' => \yiicod\auth\controllers\behaviors\AuthUserBehavior::className(),
+            ],
         ];
     }
 
@@ -66,11 +66,9 @@ class WebUserController extends Controller
      * ...
      * yiicod.auth.controllers.WebUserBase.[All event name before]
      * ...
-     *
      */
     public function actions()
     {
-
         return ArrayHelper::merge(parent::actions(), [
                 'login' => [
                     'class' => \yiicod\auth\actions\webUser\LoginAction::className(),
@@ -90,5 +88,4 @@ class WebUserController extends Controller
             ]
         );
     }
-
 }

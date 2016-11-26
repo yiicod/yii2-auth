@@ -4,17 +4,14 @@ namespace yiicod\auth\models;
 
 use Yii;
 use yii\base\Model;
-use yiicod\auth\models\User;
 
 /**
  * Password reset request form
  */
 class PasswordResetRequestForm extends Model
 {
-
     public $email;
     /**
-     *
      * @var type User model
      */
     private $_user = null;
@@ -25,6 +22,7 @@ class PasswordResetRequestForm extends Model
     public function rules()
     {
         $targetClass = Yii::$app->get('auth')->modelMap['user']['class'];
+
         return [
             ['email', 'filter', 'filter' => 'trim'],
             ['email', 'required'],
@@ -32,7 +30,7 @@ class PasswordResetRequestForm extends Model
             ['email', 'exist',
                 'targetClass' => $targetClass,
                 'targetAttribute' => $targetClass::attributesMap()['fieldEmail'],
-                'message' => 'There is no user with such email.'
+                'message' => 'There is no user with such email.',
             ],
         ];
     }
@@ -46,15 +44,15 @@ class PasswordResetRequestForm extends Model
                 ->where(['email' => $this->email])
                 ->byPasswordResetRequest()
                 ->one();
-
         }
+
         return $this->_user;
     }
 
     /**
      * Sends an email with a link, for resetting the password.
      *
-     * @return boolean whether the email was send
+     * @return bool whether the email was send
      */
     public function resetPassword()
     {
@@ -63,10 +61,10 @@ class PasswordResetRequestForm extends Model
 
         if ($user) {
             $user->generatePasswordResetToken();
+
             return $user->save();
         }
 
         return false;
     }
-
 }

@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
             $form = ActiveForm::begin([
                         'id' => 'form-signup',
                         'validateOnChange' => false,
-                        'validateOnBlur' => false
+                        'validateOnBlur' => false,
             ]);
             ?>
             <?php echo $form->field($model, 'username') ?>

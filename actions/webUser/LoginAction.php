@@ -17,6 +17,7 @@ class LoginAction extends Action
 
     /**
      * Model scenario
+     *
      * @var
      */
     public $scenario;
@@ -37,6 +38,7 @@ class LoginAction extends Action
                 $this->trigger(static::EVENT_ERROR_LOGIN, new ActionEvent($this, ['params' => ['model' => $model]]));
             }
         }
+
         return $this->controller->render($this->view, [
             'model' => $model,
         ]);
@@ -45,6 +47,7 @@ class LoginAction extends Action
     public function trigger($name, Event $event = null)
     {
         Yii::$app->trigger(sprintf('yiicod.auth.actions.webUser.LoginAction.%s', $name), $event);
+
         return parent::trigger($name, $event);
     }
 }

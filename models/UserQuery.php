@@ -1,4 +1,5 @@
 <?php
+
 namespace yiicod\auth\models;
 
 use yii\db\ActiveQuery;

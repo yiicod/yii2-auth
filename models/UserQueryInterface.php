@@ -1,4 +1,5 @@
 <?php
+
 namespace yiicod\auth\models;
 
 interface UserQueryInterface

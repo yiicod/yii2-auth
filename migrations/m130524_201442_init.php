@@ -1,4 +1,5 @@
 <?php
+
 namespace yiicod_auth_migrations;
 
 use yii\db\Migration;

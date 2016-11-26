@@ -5,12 +5,10 @@ namespace yiicod\auth;
 use Yii;
 use yii\base\BootstrapInterface;
 use yii\base\Component;
-use yii\console\Application;
 use yii\helpers\ArrayHelper;
 
 class Auth extends Component implements BootstrapInterface
 {
-
     /**
      * @var array Models settings
      */
@@ -32,5 +30,4 @@ class Auth extends Component implements BootstrapInterface
         // Namespace for migration
         Yii::setAlias('@yiicod_auth_migrations', realpath(dirname(__FILE__) . '/migrations'));
     }
-
 }

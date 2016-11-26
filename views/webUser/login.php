@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php $form = ActiveForm::begin([
                 'id' => 'login-form',
                 'validateOnChange' => false,
-                'validateOnBlur' => false
+                'validateOnBlur' => false,
                 ]); ?>
                 <?php echo $form->field($model, 'username') ?>
                 <?php echo $form->field($model, 'password')->passwordInput() ?>

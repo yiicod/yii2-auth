@@ -9,11 +9,11 @@ use yiicod\auth\actions\ActionEvent;
 
 /**
  * Login action
+ *
  * @author Orlov Alexey <aaorlov@gmail.com>
  */
 class LogoutAction extends Action
 {
-
     const EVENT_BEFORE_LOGOUT = 'beforeLogout';
     const EVENT_AFTER_LOGOUT = 'afterLogout';
 
@@ -36,6 +36,7 @@ class LogoutAction extends Action
     public function trigger($name, Event $event = null)
     {
         Yii::$app->trigger(sprintf('yiicod.auth.actions.webUser.LogoutAction.%s', $name), $event);
+
         return parent::trigger($name, $event);
     }
 }

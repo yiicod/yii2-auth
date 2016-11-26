@@ -2,7 +2,7 @@
 
 namespace yiicod\auth\controllers\behaviors;
 
-/**
+/*
  * Auth behavior with event for controller action
  * @author Orlov Alexey <aaorlov88@gmail.com>
  */
@@ -43,11 +43,11 @@ class AuthUserBehavior extends Behavior
         Yii::$app->on(sprintf('yiicod.auth.actions.webUser.RequestPasswordResetAction.%s', RequestPasswordResetAction::EVENT_BEFORE_REQUEST_PASSWORD_RESET), [$this, 'beforeRequestPasswordReset']);
         Yii::$app->on(sprintf('yiicod.auth.actions.webUser.RequestPasswordResetAction.%s', RequestPasswordResetAction::EVENT_AFTER_REQUEST_PASSWORD_RESET), [$this, 'afterRequestPasswordReset']);
         Yii::$app->on(sprintf('yiicod.auth.actions.webUser.RequestPasswordResetAction.%s', RequestPasswordResetAction::EVENT_ERROR_REQUEST_PASSWORD_RESET), [$this, 'errorRequestPasswordReset']);
-
     }
 
     /**
      * After login action event
+     *
      * @param ActionEvent $event Object has next params sender -> LoginAction,
      * params -> array('model' => UserModel)
      */
@@ -61,13 +61,13 @@ class AuthUserBehavior extends Behavior
 
     /**
      * After signup action event
+     *
      * @param ActionEvent $event Object has next params sender -> LoginAction,
      * params -> array('model' => UserModel)
      */
     public function afterSignUp($event)
     {
         if (Yii::$app->getUser()->login($event->params['user'])) {
-
             $event->action->controller->goHome();
 
             Yii::$app->getResponse()->send();
@@ -77,6 +77,7 @@ class AuthUserBehavior extends Behavior
 
     /**
      * After RequestPasswordReset action event
+     *
      * @param ActionEvent $event Object has next params sender -> LoginAction,
      * params -> array('model' => UserModel)
      */
@@ -102,6 +103,7 @@ class AuthUserBehavior extends Behavior
 
     /**
      * After ResetPassword action event
+     *
      * @param ActionEvent $event Object has next params sender -> LoginAction,
      * params -> array('model' => UserModel, 'password' => 'Not encrypt password')
      */
@@ -117,8 +119,10 @@ class AuthUserBehavior extends Behavior
 
     /**
      * Before login action event
+     *
      * @param ActionEvent $event Object has next params sender -> LoginAction,
      * params -> array('model' => UserModel)
+     *
      * @return mixed
      */
     public function beforeLogin($event)
@@ -130,6 +134,7 @@ class AuthUserBehavior extends Behavior
 
     /**
      * Before signup action event
+     *
      * @param ActionEvent $event Object has next params sender -> LoginAction,
      * params -> array('model' => UserModel)
      */
@@ -139,6 +144,7 @@ class AuthUserBehavior extends Behavior
 
     /**
      * Before RequestPasswordReset action event
+     *
      * @param ActionEvent $event Object has next params sender -> LoginAction,
      * params -> array('model' => UserModel)
      */
@@ -148,6 +154,7 @@ class AuthUserBehavior extends Behavior
 
     /**
      * Before ResetPassword action event
+     *
      * @param ActionEvent $event Object has next params sender -> LoginAction,
      * params -> array('model' => UserModel, 'password' => 'Not encrypt password')
      */
@@ -157,8 +164,10 @@ class AuthUserBehavior extends Behavior
 
     /**
      * error ResetPassword action event
+     *
      * @param ActionEvent $event Object has next params sender -> LoginAction,
      * params -> array('model' => UserModel)
+     *
      * @throws BadRequestHttpException
      */
     public function errorResetPassword($event)
@@ -168,6 +177,7 @@ class AuthUserBehavior extends Behavior
 
     /**
      * Error RequestPasswordReset action event
+     *
      * @param ActionEvent $event Object has next params sender -> LoginAction,
      * params -> array('model' => UserModel)
      */

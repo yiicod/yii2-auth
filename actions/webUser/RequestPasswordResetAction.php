@@ -17,6 +17,7 @@ class RequestPasswordResetAction extends Action
 
     /**
      * Model scenario
+     *
      * @var
      */
     public $scenario;
@@ -48,6 +49,7 @@ class RequestPasswordResetAction extends Action
     public function trigger($name, Event $event = null)
     {
         Yii::$app->trigger(sprintf('yiicod.auth.actions.webUser.RequestPasswordResetAction.%s', $name), $event);
+
         return parent::trigger($name, $event);
     }
 }

@@ -28,8 +28,8 @@ class ResetPasswordAction extends Action
             $this->trigger(static::EVENT_ERROR_RESET_PASSWORD, new ActionEvent($this, [
                 'params' => [
                     'token' => $token,
-                    'e' => $e
-                ]
+                    'e' => $e,
+                ],
             ]));
         }
 
@@ -49,6 +49,7 @@ class ResetPasswordAction extends Action
     public function trigger($name, Event $event = null)
     {
         Yii::$app->trigger(sprintf('yiicod.auth.actions.webUser.ResetPasswordAction.%s', $name), $event);
+
         return parent::trigger($name, $event);
     }
 }

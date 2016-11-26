@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
             $form = ActiveForm::begin([
                         'id' => 'request-password-reset-form',
                         'validateOnChange' => false,
-                        'validateOnBlur' => false
+                        'validateOnBlur' => false,
             ]);
             ?>
             <?php echo $form->field($model, 'email') ?>

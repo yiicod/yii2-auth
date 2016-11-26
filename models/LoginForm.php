@@ -1,10 +1,10 @@
 <?php
+
 namespace yiicod\auth\models;
 
 use Yii;
 use yii\base\Model;
 use yii\web\User;
-
 
 /**
  * Login form
@@ -52,7 +52,7 @@ class LoginForm extends Model
     /**
      * Logs in a user using the provided username and password.
      *
-     * @return boolean whether the user is logged in successfully
+     * @return bool whether the user is logged in successfully
      */
     public function login()
     {
@@ -77,11 +77,11 @@ class LoginForm extends Model
 
         return $this->_user;
     }
-    
+
     public function attributeLabels()
     {
         return \yii\helpers\ArrayHelper::merge(parent::attributeLabels(), [
-            'username' => 'email'
+            'username' => 'email',
         ]);
     }
 }

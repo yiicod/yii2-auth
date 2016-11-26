@@ -2,16 +2,14 @@
 
 namespace yiicod\auth\models;
 
-use yiicod\auth\models\User;
-use yii\base\Model;
 use Yii;
+use yii\base\Model;
 
 /**
  * Signup form
  */
 class SignupForm extends Model
 {
-
     public $username;
     public $email;
     public $password;
@@ -32,7 +30,7 @@ class SignupForm extends Model
                 'unique',
                 'targetClass' => $targetClass,
                 'targetAttribute' => $targetClass::attributesMap()['fieldUsername'],
-                'message' => 'This username has already been taken.'
+                'message' => 'This username has already been taken.',
             ],
             [['password'], 'compare', 'compareAttribute' => 'confirm', 'operator' => '==', 'skipOnEmpty' => false],
             ['username', 'string', 'min' => 2, 'max' => 255],
@@ -44,7 +42,7 @@ class SignupForm extends Model
                 'unique',
                 'targetClass' => $targetClass,
                 'targetAttribute' => $targetClass::attributesMap()['fieldEmail'],
-                'message' => 'This email address has already been taken.'
+                'message' => 'This email address has already been taken.',
             ],
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
@@ -68,10 +66,10 @@ class SignupForm extends Model
             $user->generatePassword($this->password);
             $user->generateAuthKey();
             $user->save();
+
             return $user;
         }
 
         return null;
     }
-
 }

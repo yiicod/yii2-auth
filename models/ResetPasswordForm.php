@@ -11,7 +11,6 @@ use yii\base\Model;
  */
 class ResetPasswordForm extends Model
 {
-
     public $password;
 
     /**
@@ -24,6 +23,7 @@ class ResetPasswordForm extends Model
      *
      * @param  string                          $token
      * @param  array                           $config name-value pairs that will be used to initialize the object properties
+     *
      * @throws InvalidParamException if token is empty or not valid
      */
     public function __construct($token, $config = [])
@@ -53,7 +53,7 @@ class ResetPasswordForm extends Model
     /**
      * Resets password.
      *
-     * @return boolean if password was reset.
+     * @return bool if password was reset
      */
     public function resetPassword()
     {
@@ -63,5 +63,4 @@ class ResetPasswordForm extends Model
 
         return $user->save();
     }
-
 }

@@ -6,7 +6,7 @@ return [
             'class' => 'yiicod\auth\models\UserModel',
         ],
         'userQuery' => [
-            'class' => 'yiicod\auth\models\UserQuery'
+            'class' => 'yiicod\auth\models\UserQuery',
         ],
         'passwordResetRequestForm' => [
             'class' => 'yiicod\auth\models\PasswordResetRequestForm',
@@ -19,7 +19,6 @@ return [
         ],
         'loginForm' => [
             'class' => 'yiicod\auth\models\LoginForm',
-        ]
+        ],
     ],
 ];
-//adfgfdgsdg6@gmail.com
