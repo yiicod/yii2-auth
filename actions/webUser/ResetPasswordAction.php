@@ -6,7 +6,8 @@ use Yii;
 use yii\base\Action;
 use yii\base\Event;
 use yii\base\InvalidParamException;
-use yiicod\auth\actions\ActionEvent;
+use yiicod\auth\events\ResetPasswordErrorEvent;
+use yiicod\auth\events\ResetPasswordEvent;
 
 class ResetPasswordAction extends Action
 {
@@ -21,16 +22,11 @@ class ResetPasswordAction extends Action
         $model = null;
         $resetPasswordFormClass = Yii::$app->get('auth')->modelMap['resetPasswordForm']['class'];
 
-        $this->trigger(static::EVENT_BEFORE_RESET_PASSWORD, new ActionEvent($this, ['params' => ['model' => $model]]));
+        Event::trigger(self::class, static::EVENT_BEFORE_RESET_PASSWORD, new ResetPasswordEvent($this, $model, ['sender' => $this]));
         try {
             $model = new $resetPasswordFormClass($token);
         } catch (InvalidParamException $e) {
-            $this->trigger(static::EVENT_ERROR_RESET_PASSWORD, new ActionEvent($this, [
-                'params' => [
-                    'token' => $token,
-                    'e' => $e,
-                ],
-            ]));
+            Event::trigger(self::class, static::EVENT_ERROR_RESET_PASSWORD, new ResetPasswordErrorEvent($this, $token, $e, ['sender' => $this]));
         }
 
         if ($model instanceof $resetPasswordFormClass &&
@@ -38,7 +34,7 @@ class ResetPasswordAction extends Action
             $model->validate() &&
             $model->resetPassword()
         ) {
-            $this->trigger(static::EVENT_AFTER_RESET_PASSWORD, new ActionEvent($this, ['params' => ['model' => $model]]));
+            Event::trigger(self::class, static::EVENT_AFTER_RESET_PASSWORD, new ResetPasswordEvent($this, $model, ['sender' => $this]));
         }
 
         return $this->controller->render($this->view, [
@@ -46,10 +42,10 @@ class ResetPasswordAction extends Action
         ]);
     }
 
-    public function trigger($name, Event $event = null)
-    {
-        Yii::$app->trigger(sprintf('yiicod.auth.actions.webUser.ResetPasswordAction.%s', $name), $event);
+//    public function trigger($name, Event $event = null)
+//    {
+//        Yii::$app->trigger(sprintf('yiicod.auth.actions.webUser.ResetPasswordAction.%s', $name), $event);
 
-        return parent::trigger($name, $event);
-    }
+//        return parent::trigger($name, $event);
+//    }
 }

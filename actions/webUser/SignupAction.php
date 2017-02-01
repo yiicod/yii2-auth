@@ -5,7 +5,7 @@ namespace yiicod\auth\actions\webUser;
 use Yii;
 use yii\base\Action;
 use yii\base\Event;
-use yiicod\auth\actions\ActionEvent;
+use yiicod\auth\events\SignupEvent;
 
 class SignupAction extends Action
 {
@@ -31,28 +31,13 @@ class SignupAction extends Action
 
         $isLoad = $model->load(Yii::$app->request->post());
 
-        $this->trigger(static::EVENT_BEFORE_SIGNUP, new ActionEvent($this, [
-            'params' => [
-                'model' => $model,
-                'user' => $user,
-            ],
-        ]));
+        Event::trigger(self::class, static::EVENT_BEFORE_SIGNUP, new SignupEvent($this, $user, $model, ['sender' => $this]));
 
         if ($isLoad) {
             if ($user = $model->signup($user)) {
-                $this->trigger(static::EVENT_AFTER_SIGNUP, new ActionEvent($this, [
-                    'params' => [
-                        'model' => $model,
-                        'user' => $user,
-                    ],
-                ]));
+                Event::trigger(self::class, static::EVENT_AFTER_SIGNUP, new SignupEvent($this, $user, $model, ['sender' => $this]));
             } else {
-                $this->trigger(static::EVENT_ERROR_SIGNUP, new ActionEvent($this, [
-                    'params' => [
-                        'model' => $model,
-                        'user' => $user,
-                    ],
-                ]));
+                Event::trigger(self::class, static::EVENT_ERROR_SIGNUP, new SignupEvent($this, $user, $model, ['sender' => $this]));
             }
         }
 
@@ -61,10 +46,10 @@ class SignupAction extends Action
         ]);
     }
 
-    public function trigger($name, Event $event = null)
-    {
-        Yii::$app->trigger(sprintf('yiicod.auth.actions.webUser.SignupAction.%s', $name), $event);
+//    public function trigger($name, Event $event = null)
+//    {
+//        Yii::$app->trigger(sprintf('yiicod.auth.actions.webUser.SignupAction.%s', $name), $event);
 
-        return parent::trigger($name, $event);
-    }
+//        return parent::trigger($name, $event);
+//    }
 }

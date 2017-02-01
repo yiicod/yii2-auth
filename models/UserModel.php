@@ -3,6 +3,7 @@
 namespace yiicod\auth\models;
 
 use Yii;
+use yii\base\InvalidParamException;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -158,9 +159,13 @@ class UserModel extends ActiveRecord implements IdentityInterface
      */
     public function validatePassword($password)
     {
-        return Yii::$app->security->validatePassword(
-            $password, $this->password
-        );
+        try {
+            return Yii::$app->security->validatePassword(
+                $password, $this->password
+            );
+        } catch (InvalidParamException $e) {
+            return false;
+        }
     }
 
     /**

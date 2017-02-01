@@ -5,7 +5,7 @@ namespace yiicod\auth\actions\webUser;
 use Yii;
 use yii\base\Action;
 use yii\base\Event;
-use yiicod\auth\actions\ActionEvent;
+use yiicod\auth\events\RequestPasswordResetEvent;
 
 class RequestPasswordResetAction extends Action
 {
@@ -29,14 +29,14 @@ class RequestPasswordResetAction extends Action
 
         $isLoad = $model->load(Yii::$app->request->post());
 
-        $this->trigger(static::EVENT_BEFORE_REQUEST_PASSWORD_RESET, new ActionEvent($this, ['params' => ['model' => $model]]));
+        Event::trigger(self::class, static::EVENT_BEFORE_REQUEST_PASSWORD_RESET, new RequestPasswordResetEvent($this, $model, ['sender' => $this]));
 
         if ($isLoad) {
             if ($model->validate()) {
                 if ($model->resetPassword()) {
-                    $this->trigger(static::EVENT_AFTER_REQUEST_PASSWORD_RESET, new ActionEvent($this, ['params' => ['model' => $model]]));
+                    Event::trigger(self::class, static::EVENT_AFTER_REQUEST_PASSWORD_RESET, new RequestPasswordResetEvent($this, $model, ['sender' => $this]));
                 } else {
-                    $this->trigger(static::EVENT_ERROR_REQUEST_PASSWORD_RESET, new ActionEvent($this, ['params' => ['model' => $model]]));
+                    Event::trigger(self::class, static::EVENT_ERROR_REQUEST_PASSWORD_RESET, new RequestPasswordResetEvent($this, $model, ['sender' => $this]));
                 }
             }
         }

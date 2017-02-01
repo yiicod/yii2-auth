@@ -8,48 +8,56 @@ namespace yiicod\auth\controllers\behaviors;
  */
 
 use Yii;
+use yii\base\ActionEvent;
 use yii\base\Behavior;
+use yii\base\Event;
 use yii\web\BadRequestHttpException;
-use yiicod\auth\actions\ActionEvent;
+use yiicod\auth\actions\webUser\LoginAction;
 use yiicod\auth\actions\webUser\LogoutAction;
 use yiicod\auth\actions\webUser\RequestPasswordResetAction;
 use yiicod\auth\actions\webUser\ResetPasswordAction;
 use yiicod\auth\actions\webUser\SignupAction;
+use yiicod\auth\events\LoginEvent;
+use yiicod\auth\events\RequestPasswordResetEvent;
+use yiicod\auth\events\ResetPasswordEvent;
+use yiicod\auth\events\SignupEvent;
 
 class AuthUserBehavior extends Behavior
 {
+    /**
+     * Assign all events
+     */
     public function init()
     {
         // Signup
-        Yii::$app->on(sprintf('yiicod.auth.actions.webUser.SignupAction.%s', SignupAction::EVENT_BEFORE_SIGNUP), [$this, 'beforeSignup']);
-        Yii::$app->on(sprintf('yiicod.auth.actions.webUser.SignupAction.%s', SignupAction::EVENT_AFTER_SIGNUP), [$this, 'afterSignup']);
-        Yii::$app->on(sprintf('yiicod.auth.actions.webUser.SignupAction.%s', SignupAction::EVENT_ERROR_SIGNUP), [$this, 'errorSignup']);
+        Event::on(SignupAction::class, SignupAction::EVENT_BEFORE_SIGNUP, [$this, 'beforeSignup']);
+        Event::on(SignupAction::class, SignupAction::EVENT_AFTER_SIGNUP, [$this, 'afterSignup']);
+        Event::on(SignupAction::class, SignupAction::EVENT_ERROR_SIGNUP, [$this, 'errorSignup']);
 
         // Login
-        Yii::$app->on(sprintf('yiicod.auth.actions.webUser.LoginAction.%s', SignupAction::EVENT_BEFORE_SIGNUP), [$this, 'beforeLogin']);
-        Yii::$app->on(sprintf('yiicod.auth.actions.webUser.LoginAction.%s', SignupAction::EVENT_AFTER_SIGNUP), [$this, 'afterLogin']);
-        Yii::$app->on(sprintf('yiicod.auth.actions.webUser.LoginAction.%s', SignupAction::EVENT_ERROR_SIGNUP), [$this, 'errorLogin']);
+        Event::on(LoginAction::class, LoginAction::EVENT_BEFORE_LOGIN, [$this, 'beforeLogin']);
+        Event::on(LoginAction::class, LoginAction::EVENT_AFTER_LOGIN, [$this, 'afterLogin']);
+        Event::on(LoginAction::class, LoginAction::EVENT_ERROR_LOGIN, [$this, 'errorLogin']);
 
         // Logout
-        Yii::$app->on(sprintf('yiicod.auth.actions.webUser.LoginAction.%s', LogoutAction::EVENT_BEFORE_LOGOUT), [$this, 'beforeLogout']);
-        Yii::$app->on(sprintf('yiicod.auth.actions.webUser.LoginAction.%s', LogoutAction::EVENT_AFTER_LOGOUT), [$this, 'afterLogout']);
+        Event::on(LogoutAction::class, LogoutAction::EVENT_BEFORE_LOGOUT, [$this, 'beforeLogout']);
+        Event::on(LogoutAction::class, LogoutAction::EVENT_AFTER_LOGOUT, [$this, 'afterLogout']);
 
         // ResetPassword
-        Yii::$app->on(sprintf('yiicod.auth.actions.webUser.ResetPasswordAction.%s', ResetPasswordAction::EVENT_BEFORE_RESET_PASSWORD), [$this, 'beforeResetPassword']);
-        Yii::$app->on(sprintf('yiicod.auth.actions.webUser.ResetPasswordAction.%s', ResetPasswordAction::EVENT_AFTER_RESET_PASSWORD), [$this, 'afterResetPassword']);
-        Yii::$app->on(sprintf('yiicod.auth.actions.webUser.ResetPasswordAction.%s', ResetPasswordAction::EVENT_ERROR_RESET_PASSWORD), [$this, 'errorResetPassword']);
+        Event::on(ResetPasswordAction::class, ResetPasswordAction::EVENT_BEFORE_RESET_PASSWORD, [$this, 'beforeResetPassword']);
+        Event::on(ResetPasswordAction::class, ResetPasswordAction::EVENT_AFTER_RESET_PASSWORD, [$this, 'afterResetPassword']);
+        Event::on(ResetPasswordAction::class, ResetPasswordAction::EVENT_ERROR_RESET_PASSWORD, [$this, 'errorResetPassword']);
 
         // RequestPasswordReset
-        Yii::$app->on(sprintf('yiicod.auth.actions.webUser.RequestPasswordResetAction.%s', RequestPasswordResetAction::EVENT_BEFORE_REQUEST_PASSWORD_RESET), [$this, 'beforeRequestPasswordReset']);
-        Yii::$app->on(sprintf('yiicod.auth.actions.webUser.RequestPasswordResetAction.%s', RequestPasswordResetAction::EVENT_AFTER_REQUEST_PASSWORD_RESET), [$this, 'afterRequestPasswordReset']);
-        Yii::$app->on(sprintf('yiicod.auth.actions.webUser.RequestPasswordResetAction.%s', RequestPasswordResetAction::EVENT_ERROR_REQUEST_PASSWORD_RESET), [$this, 'errorRequestPasswordReset']);
+        Event::on(RequestPasswordResetAction::class, RequestPasswordResetAction::EVENT_BEFORE_REQUEST_PASSWORD_RESET, [$this, 'beforeRequestPasswordReset']);
+        Event::on(RequestPasswordResetAction::class, RequestPasswordResetAction::EVENT_AFTER_REQUEST_PASSWORD_RESET, [$this, 'afterRequestPasswordReset']);
+        Event::on(RequestPasswordResetAction::class, RequestPasswordResetAction::EVENT_ERROR_REQUEST_PASSWORD_RESET, [$this, 'errorRequestPasswordReset']);
     }
 
     /**
      * After login action event
      *
-     * @param ActionEvent $event Object has next params sender -> LoginAction,
-     * params -> array('model' => UserModel)
+     * @param LoginEvent $event
      */
     public function afterLogin($event)
     {
@@ -62,12 +70,11 @@ class AuthUserBehavior extends Behavior
     /**
      * After signup action event
      *
-     * @param ActionEvent $event Object has next params sender -> LoginAction,
-     * params -> array('model' => UserModel)
+     * @param SignupEvent $event
      */
     public function afterSignUp($event)
     {
-        if (Yii::$app->getUser()->login($event->params['user'])) {
+        if (Yii::$app->getUser()->login($event->user)) {
             $event->action->controller->goHome();
 
             Yii::$app->getResponse()->send();
@@ -78,18 +85,18 @@ class AuthUserBehavior extends Behavior
     /**
      * After RequestPasswordReset action event
      *
-     * @param ActionEvent $event Object has next params sender -> LoginAction,
-     * params -> array('model' => UserModel)
+     * @param RequestPasswordResetEvent $event
      */
     public function afterRequestPasswordReset($event)
     {
         $mailerViewPath = Yii::$app->mailer->viewPath;
 
         Yii::$app->mailer->viewPath = '@yiicod/yii2-auth/mail';
-        Yii::$app->mailer->compose('passwordResetToken', ['action' => $event->action, 'user' => $event->params['model']->findUser()])
+        Yii::$app->mailer->compose('passwordResetToken', ['action' => $event->action, 'user' => $event->model->findUser()])
             ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
-            ->setTo($event->params['model']->email)
-            ->setSubject('Password reset for ' . Yii::$app->name);
+            ->setTo($event->model->email)
+            ->setSubject('Password reset for ' . Yii::$app->name)
+            ->send();
 
         Yii::$app->getSession()->setFlash('success', 'Check your email for further instructions.');
 
@@ -104,8 +111,7 @@ class AuthUserBehavior extends Behavior
     /**
      * After ResetPassword action event
      *
-     * @param ActionEvent $event Object has next params sender -> LoginAction,
-     * params -> array('model' => UserModel, 'password' => 'Not encrypt password')
+     * @param ResetPasswordEvent $event
      */
     public function afterResetPassword($event)
     {
@@ -120,8 +126,7 @@ class AuthUserBehavior extends Behavior
     /**
      * Before login action event
      *
-     * @param ActionEvent $event Object has next params sender -> LoginAction,
-     * params -> array('model' => UserModel)
+     * @param LoginEvent $event
      *
      * @return mixed
      */
@@ -135,8 +140,7 @@ class AuthUserBehavior extends Behavior
     /**
      * Before signup action event
      *
-     * @param ActionEvent $event Object has next params sender -> LoginAction,
-     * params -> array('model' => UserModel)
+     * @param SignupEvent $event
      */
     public function beforeSignup($event)
     {
@@ -145,8 +149,7 @@ class AuthUserBehavior extends Behavior
     /**
      * Before RequestPasswordReset action event
      *
-     * @param ActionEvent $event Object has next params sender -> LoginAction,
-     * params -> array('model' => UserModel)
+     * @param RequestPasswordResetEvent $event
      */
     public function beforeRequestPasswordReset($event)
     {
@@ -155,8 +158,7 @@ class AuthUserBehavior extends Behavior
     /**
      * Before ResetPassword action event
      *
-     * @param ActionEvent $event Object has next params sender -> LoginAction,
-     * params -> array('model' => UserModel, 'password' => 'Not encrypt password')
+     * @param ResetPasswordEvent $event
      */
     public function beforeResetPassword($event)
     {
@@ -165,39 +167,49 @@ class AuthUserBehavior extends Behavior
     /**
      * error ResetPassword action event
      *
-     * @param ActionEvent $event Object has next params sender -> LoginAction,
-     * params -> array('model' => UserModel)
+     * @param ResetPasswordEvent $event
      *
      * @throws BadRequestHttpException
      */
     public function errorResetPassword($event)
     {
-        throw new BadRequestHttpException($event->params['e']->getMessage());
+        throw new BadRequestHttpException($event->e->getMessage());
     }
 
     /**
      * Error RequestPasswordReset action event
      *
-     * @param ActionEvent $event Object has next params sender -> LoginAction,
-     * params -> array('model' => UserModel)
+     * @param RequestPasswordResetEvent $event
      */
     public function errorRequestPasswordReset($event)
     {
         Yii::$app->getSession()->setFlash('error', 'Sorry, we are unable to reset password for email provided.');
     }
 
+    /**
+     * @param ActionEvent $event
+     */
     public function afterLogout($event)
     {
     }
 
+    /**
+     * @param ActionEvent $event
+     */
     public function beforeLogout($event)
     {
     }
 
+    /**
+     * @param LoginEvent $event
+     */
     public function errorLogin($event)
     {
     }
 
+    /**
+     * @param SignupEvent $event
+     */
     public function errorSignup($event)
     {
     }

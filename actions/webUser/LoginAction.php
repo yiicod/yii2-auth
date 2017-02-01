@@ -5,7 +5,7 @@ namespace yiicod\auth\actions\webUser;
 use Yii;
 use yii\base\Action;
 use yii\base\Event;
-use yiicod\auth\actions\ActionEvent;
+use yiicod\auth\events\LoginEvent;
 
 class LoginAction extends Action
 {
@@ -29,13 +29,13 @@ class LoginAction extends Action
 
         $isLoad = $model->load(Yii::$app->request->post());
 
-        $this->trigger(static::EVENT_BEFORE_LOGIN, new ActionEvent($this, ['params' => ['model' => $model]]));
+        Event::trigger(self::class, static::EVENT_BEFORE_LOGIN, new LoginEvent($this, $model, ['sender' => $this]));
 
         if ($isLoad) {
             if ($model->login()) {
-                $this->trigger(static::EVENT_AFTER_LOGIN, new ActionEvent($this, ['params' => ['model' => $model]]));
+                Event::trigger(self::class, static::EVENT_AFTER_LOGIN, new LoginEvent($this, $model, ['sender' => $this]));
             } else {
-                $this->trigger(static::EVENT_ERROR_LOGIN, new ActionEvent($this, ['params' => ['model' => $model]]));
+                Event::trigger(self::class, static::EVENT_ERROR_LOGIN, new LoginEvent($this, $model, ['sender' => $this]));
             }
         }
 
@@ -44,10 +44,10 @@ class LoginAction extends Action
         ]);
     }
 
-    public function trigger($name, Event $event = null)
-    {
-        Yii::$app->trigger(sprintf('yiicod.auth.actions.webUser.LoginAction.%s', $name), $event);
+//    public function trigger($name, Event $event = null)
+//    {
+//        Yii::$app->trigger(sprintf('yiicod.auth.actions.webUser.LoginAction.%s', $name), $event);
 
-        return parent::trigger($name, $event);
-    }
+//        return parent::trigger($name, $event);
+//    }
 }

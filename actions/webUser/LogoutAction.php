@@ -4,8 +4,8 @@ namespace yiicod\auth\actions\webUser;
 
 use Yii;
 use yii\base\Action;
+use yii\base\ActionEvent;
 use yii\base\Event;
-use yiicod\auth\actions\ActionEvent;
 
 /**
  * Login action
@@ -24,19 +24,19 @@ class LogoutAction extends Action
      */
     public function run()
     {
-        $this->trigger(static::EVENT_BEFORE_LOGOUT, new ActionEvent($this));
+        Event::trigger(self::class, static::EVENT_BEFORE_LOGOUT, new ActionEvent($this, ['sender' => $this]));
 
         Yii::$app->user->logout();
 
-        $this->trigger(static::EVENT_AFTER_LOGOUT, new ActionEvent($this));
+        Event::trigger(self::class, static::EVENT_AFTER_LOGOUT, new ActionEvent($this, ['sender' => $this]));
 
         return Yii::$app->controller->goHome();
     }
 
-    public function trigger($name, Event $event = null)
-    {
-        Yii::$app->trigger(sprintf('yiicod.auth.actions.webUser.LogoutAction.%s', $name), $event);
+//    public function trigger($name, Event $event = null)
+//    {
+//        Yii::$app->trigger(sprintf('yiicod.auth.actions.webUser.LogoutAction.%s', $name), $event);
 
-        return parent::trigger($name, $event);
-    }
+//        return parent::trigger($name, $event);
+//    }
 }
