@@ -12,7 +12,10 @@
     ],
     "require": {
         "yiicod/yii2-base": "*"
-    },    
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "~2.1"
+    },
     "autoload": {
         "psr-4": {
             "yiicod\\auth\\": ""
