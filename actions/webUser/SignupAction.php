@@ -43,13 +43,7 @@ class SignupAction extends Action
 
         return $this->controller->render($this->view, [
             'model' => $model,
+            'user' => $user,
         ]);
     }
-
-//    public function trigger($name, Event $event = null)
-//    {
-//        Yii::$app->trigger(sprintf('yiicod.auth.actions.webUser.SignupAction.%s', $name), $event);
-
-//        return parent::trigger($name, $event);
-//    }
 }

@@ -11,6 +11,7 @@
         }
     ],
     "require": {
+        "yiisoft/yii2": "~2.0.8",
         "yiicod/yii2-base": "*"
     },
     "require-dev": {

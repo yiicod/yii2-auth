@@ -30,13 +30,6 @@ class LogoutAction extends Action
 
         Event::trigger(self::class, static::EVENT_AFTER_LOGOUT, new ActionEvent($this, ['sender' => $this]));
 
-        return Yii::$app->controller->goHome();
+        return $this->controller->goHome();
     }
-
-//    public function trigger($name, Event $event = null)
-//    {
-//        Yii::$app->trigger(sprintf('yiicod.auth.actions.webUser.LogoutAction.%s', $name), $event);
-
-//        return parent::trigger($name, $event);
-//    }
 }
