@@ -6,12 +6,12 @@ use yii\base\ActionEvent;
 
 class ResetPasswordEvent extends ActionEvent
 {
-    public $model;
+    public $token;
 
-    public function __construct($action, $model, array $config = [])
+    public function __construct($action, $token, array $config = [])
     {
         $this->action = $action;
-        $this->model = $model;
+        $this->token = $token;
 
         parent::__construct($action, $config);
     }

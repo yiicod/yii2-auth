@@ -14,7 +14,7 @@ class SignupActionTest extends TestCase
             'SignupForm' => [
             ],
         ];
-        $response = $this->runAction();
+        $response = $this->mockAction();
 
         $this->assertTrue($response['params']['model']->hasErrors());
     }
@@ -30,7 +30,7 @@ class SignupActionTest extends TestCase
             ],
         ];
 
-        $responce = $this->runAction();
+        $responce = $this->mockAction();
 
         $this->assertTrue(count($responce['params']['model']->getErrors()) <= 0);
         $this->assertTrue(is_null($responce['params']['user']) === false);
@@ -43,7 +43,7 @@ class SignupActionTest extends TestCase
      *
      * @return string
      */
-    protected function runAction(array $config = [])
+    protected function mockAction(array $config = [])
     {
         $action = new SignupAction('signupAction', $this->createController());
 

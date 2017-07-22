@@ -19,10 +19,9 @@ class ResetPasswordAction extends Action
 
     public function run($token)
     {
-        $model = null;
         $resetPasswordFormClass = Yii::$app->get('auth')->modelMap['resetPasswordForm']['class'];
 
-        Event::trigger(self::class, static::EVENT_BEFORE_RESET_PASSWORD, new ResetPasswordEvent($this, $model, ['sender' => $this]));
+        Event::trigger(self::class, static::EVENT_BEFORE_RESET_PASSWORD, new ResetPasswordEvent($this, $token, ['sender' => $this]));
         try {
             $model = new $resetPasswordFormClass($token);
         } catch (InvalidParamException $e) {

@@ -47,8 +47,9 @@ class TestCase extends \PHPUnit_Framework_TestCase
                     'dsn' => 'sqlite::memory:',
                 ],
                 'request' => [
-                    'hostInfo' => 'http://domain.com',
-                    'scriptUrl' => 'index.php',
+                    'cookieValidationKey' => 'wefJDF8sfdsfSDefwqdxj9oq',
+                    'scriptFile' => __DIR__ . '/index.php',
+                    'scriptUrl' => '/index.php',
                 ],
                 'user' => [
                     'identityClass' => 'yiicod\auth\models\UserModel',
@@ -72,6 +73,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
             ],
             'params' => [
                 'user.passwordResetTokenExpire' => 1000,
+                'supportEmail' => 'support@example.com',
             ],
         ], $config));
     }
@@ -127,6 +129,17 @@ class TestCase extends \PHPUnit_Framework_TestCase
             'email' => 'test@mail.com',
             'auth_key' => Yii::$app->getSecurity()->generateRandomString(),
             'password_hash' => Yii::$app->getSecurity()->generatePasswordHash('password'),
+            'status' => 1,
+            'created_date' => date('Y-m-d H:i:s'),
+            'updated_date' => date('Y-m-d H:i:s'),
+        ])->execute();
+
+        $db->createCommand()->insert('{{%user}}', [
+            'username' => 'reset-password',
+            'email' => 'reset-password@mail.com',
+            'auth_key' => Yii::$app->getSecurity()->generateRandomString(),
+            'password_hash' => Yii::$app->getSecurity()->generatePasswordHash('password'),
+            'password_reset_token' => Yii::$app->security->generateRandomString() . '_' . time(),
             'status' => 1,
             'created_date' => date('Y-m-d H:i:s'),
             'updated_date' => date('Y-m-d H:i:s'),

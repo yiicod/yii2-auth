@@ -4,7 +4,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $user common\models\User */
 
-$resetLink = yii\helpers\Url::toRoute(['resetPassword', 'token' => $user->passwordResetToken], true);
+$resetLink = yii\helpers\Url::toRoute(['reset-password', 'token' => $user->passwordResetToken], true);
 ?>
 
 Hello,

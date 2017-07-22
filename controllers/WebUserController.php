@@ -25,7 +25,7 @@ class WebUserController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['login', 'logout', 'requestPasswordReset', 'signup', 'resetPassword'],
+                        'actions' => ['login', 'logout', 'request-password-reset', 'signup', 'reset-password'],
                     ],
                 ],
             ],
@@ -73,7 +73,7 @@ class WebUserController extends Controller
                 'login' => [
                     'class' => \yiicod\auth\actions\webUser\LoginAction::className(),
                 ],
-                'requestPasswordReset' => [
+                'request-password-reset' => [
                     'class' => \yiicod\auth\actions\webUser\RequestPasswordResetAction::className(),
                 ],
                 'logout' => [
@@ -82,7 +82,7 @@ class WebUserController extends Controller
                 'signup' => [
                     'class' => \yiicod\auth\actions\webUser\SignupAction::className(),
                 ],
-                'resetPassword' => [
+                'reset-password' => [
                     'class' => \yiicod\auth\actions\webUser\ResetPasswordAction::className(),
                 ],
             ]

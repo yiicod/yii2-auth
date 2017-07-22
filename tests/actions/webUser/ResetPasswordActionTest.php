@@ -21,10 +21,10 @@ class ResetPasswordActionTest extends TestCase
             ],
         ];
 
-        $action = new ResetPasswordAction('resetPasswordAction', $this->createController());
+        $action = new ResetPasswordAction('reset-password', $this->createController());
         $responce = $action->run($model->password_reset_token);
 
-        $this->assertTrue(count($responce['params']['model']->getErrors()) <= 0);
+        $this->assertTrue(empty($responce['params']['model']->getErrors()));
 
         $model = UserModel::findOne(['email' => 'test@mail.com']);
         $this->assertTrue($model->validatePassword('123123'));

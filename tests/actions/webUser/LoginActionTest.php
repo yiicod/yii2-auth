@@ -27,7 +27,7 @@ class LoginActionTest extends TestCase
             ],
         ];
 
-        $response = $this->runAction();
+        $response = $this->mockAction();
 
         $this->assertTrue(true);
         $this->assertTrue('Incorrect username or password.' === $response['params']['model']->getErrors()['password'][0]);
@@ -43,7 +43,7 @@ class LoginActionTest extends TestCase
             ],
         ];
 
-        $response = $this->runAction([]);
+        $response = $this->mockAction([]);
 
         $this->assertTrue(is_a(Yii::$app->user->identity, UserModel::class));
     }
@@ -55,7 +55,7 @@ class LoginActionTest extends TestCase
      *
      * @return string
      */
-    protected function runAction(array $config = [])
+    protected function mockAction(array $config = [])
     {
         $action = new LoginAction('login', $this->createController(), $config);
 

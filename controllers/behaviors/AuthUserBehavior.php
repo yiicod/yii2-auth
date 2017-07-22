@@ -63,7 +63,6 @@ class AuthUserBehavior extends Behavior
     {
         $event->action->controller->goHome();
 
-        Yii::$app->getResponse()->send();
         Yii::$app->end();
     }
 
@@ -77,7 +76,6 @@ class AuthUserBehavior extends Behavior
         if (Yii::$app->getUser()->login($event->user)) {
             $event->action->controller->goHome();
 
-            Yii::$app->getResponse()->send();
             Yii::$app->end();
         }
     }
@@ -104,7 +102,6 @@ class AuthUserBehavior extends Behavior
 
         $event->action->controller->goHome();
 
-        Yii::$app->getResponse()->send();
         Yii::$app->end();
     }
 
@@ -119,7 +116,6 @@ class AuthUserBehavior extends Behavior
 
         $event->action->controller->goHome();
 
-        Yii::$app->getResponse()->send();
         Yii::$app->end();
     }
 
@@ -132,8 +128,9 @@ class AuthUserBehavior extends Behavior
      */
     public function beforeLogin($event)
     {
-        if (!Yii::$app->user->isGuest) {
-            return $event->action->controller->goHome();
+        if (false === Yii::$app->user->isGuest) {
+            $event->action->controller->goHome();
+            Yii::$app->end();
         }
     }
 

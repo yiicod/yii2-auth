@@ -4,7 +4,6 @@ namespace yiicod\auth\tests\actions;
 
 use Yii;
 use yiicod\auth\actions\webUser\RequestPasswordResetAction;
-use yiicod\auth\models\UserModel;
 use yiicod\auth\tests\TestCase;
 
 class RequestPasswordResetTest extends TestCase
@@ -17,7 +16,7 @@ class RequestPasswordResetTest extends TestCase
             ],
         ];
 
-        $response = $this->runAction();
+        $response = $this->mockAction();
 
         $this->assertTrue($response['params']['model']->hasErrors());
     }
@@ -30,12 +29,9 @@ class RequestPasswordResetTest extends TestCase
             ],
         ];
 
-        $model = UserModel::findOne(['email' => 'test@mail.com']);
+        $response = $this->mockAction();
 
-        $this->assertTrue(is_null($model->password_reset_token) === true);
-
-        $response = $this->runAction();
-
+        $this->assertTrue(empty($response['params']['model']->getErrors()));
         $this->assertTrue(empty($response['params']['model']->findUser()->password_reset_token) === false);
     }
 
@@ -46,7 +42,7 @@ class RequestPasswordResetTest extends TestCase
      *
      * @return string
      */
-    protected function runAction(array $config = [])
+    protected function mockAction(array $config = [])
     {
         $action = new RequestPasswordResetAction('requestPasswordReset', $this->createController(), $config);
 
