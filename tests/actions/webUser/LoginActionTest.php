@@ -10,12 +10,12 @@ use yiicod\auth\tests\TestCase;
 class LoginActionTest extends TestCase
 {
     //    /**
-//     * @expectedException \yii\base\InvalidConfigException
-//     */
-//    public function testCheckIncorrectAction()
-//    {
-//
-//    }
+    //     * @expectedException \yii\base\InvalidConfigException
+    //     */
+    //    public function testCheckIncorrectAction()
+    //    {
+    //
+    //    }
 
     public function testIncorrectCredential()
     {
