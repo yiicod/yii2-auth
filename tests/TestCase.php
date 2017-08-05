@@ -10,7 +10,7 @@ use yiicod\auth\tests\data\Controller;
 /**
  * This is the base class for all yii framework unit tests.
  */
-class TestCase extends \PHPUnit_Framework_TestCase
+class TestCase extends \PHPUnit\Framework\TestCase
 {
     protected function setUp()
     {
@@ -45,6 +45,14 @@ class TestCase extends \PHPUnit_Framework_TestCase
                 'db' => [
                     'class' => 'yii\db\Connection',
                     'dsn' => 'sqlite::memory:',
+                ],
+                'mailer' => [
+                    'class' => 'yii\swiftmailer\Mailer',
+                    'viewPath' => null,
+                    // send all mails to a file by default. You have to set
+                    // 'useFileTransport' to false and configure a transport
+                    // for the mailer to send real emails.
+                    'useFileTransport' => true,
                 ],
                 'request' => [
                     'cookieValidationKey' => 'wefJDF8sfdsfSDefwqdxj9oq',
