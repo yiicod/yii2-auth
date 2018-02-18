@@ -33,7 +33,7 @@ class SignupActionTest extends TestCase
         $responce = $this->mockAction();
 
         $this->assertTrue(count($responce['params']['model']->getErrors()) <= 0);
-        $this->assertTrue(is_null($responce['params']['user']) === false);
+        $this->assertTrue(false === is_null($responce['params']['user']));
     }
 
     /**

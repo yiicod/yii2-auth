@@ -11,7 +11,7 @@ $this->title = 'Reset password';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-reset-password">
-    <h1><?php echo Html::encode($this->title) ?></h1>
+    <h1><?php echo Html::encode($this->title); ?></h1>
 
     <p>Please choose your new password:</p>
 
@@ -24,9 +24,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'validateOnBlur' => false,
             ]);
             ?>
-            <?php echo $form->field($model, 'password')->passwordInput() ?>
+            <?php echo $form->field($model, 'password')->passwordInput(); ?>
             <div class="form-group">
-                <?php echo Html::submitButton('Save', ['class' => 'btn btn-primary']) ?>
+                <?php echo Html::submitButton('Save', ['class' => 'btn btn-primary']); ?>
             </div>
             <?php ActiveForm::end(); ?>
         </div>

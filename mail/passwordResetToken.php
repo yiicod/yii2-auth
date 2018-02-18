@@ -11,4 +11,4 @@ Hello,
 
 Follow the link below to reset your password:
 
-<?php echo Html::a('Reset password', $resetLink) ?>
+<?php echo Html::a('Reset password', $resetLink); ?>

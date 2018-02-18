@@ -18,6 +18,6 @@ class LogoutActionTest extends TestCase
         $logout = new LogoutAction('logout', $this->createController());
         $logout->run();
 
-        $this->assertTrue(Yii::$app->user->identity === null);
+        $this->assertTrue(null === Yii::$app->user->identity);
     }
 }

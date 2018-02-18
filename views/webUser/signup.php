@@ -11,7 +11,7 @@ $this->title = 'Signup';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-signup">
-    <h1><?php echo Html::encode($this->title) ?></h1>
+    <h1><?php echo Html::encode($this->title); ?></h1>
 
     <p>Please fill out the following fields to signup:</p>
 
@@ -24,12 +24,12 @@ $this->params['breadcrumbs'][] = $this->title;
                         'validateOnBlur' => false,
             ]);
             ?>
-            <?php echo $form->field($model, 'username') ?>
-            <?php echo $form->field($model, 'email') ?>
-                <?php echo $form->field($model, 'password')->passwordInput() ?>
-                <?php echo $form->field($model, 'confirm')->passwordInput() ?>
+            <?php echo $form->field($model, 'username'); ?>
+            <?php echo $form->field($model, 'email'); ?>
+                <?php echo $form->field($model, 'password')->passwordInput(); ?>
+                <?php echo $form->field($model, 'confirm')->passwordInput(); ?>
             <div class="form-group">
-            <?php echo Html::submitButton('Signup', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
+            <?php echo Html::submitButton('Signup', ['class' => 'btn btn-primary', 'name' => 'signup-button']); ?>
             </div>
 <?php ActiveForm::end(); ?>
         </div>

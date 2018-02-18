@@ -32,7 +32,7 @@ class RequestPasswordResetTest extends TestCase
         $response = $this->mockAction();
 
         $this->assertTrue(empty($response['params']['model']->getErrors()));
-        $this->assertTrue(empty($response['params']['model']->findUser()->password_reset_token) === false);
+        $this->assertTrue(false === empty($response['params']['model']->findUser()->password_reset_token));
     }
 
     /**
